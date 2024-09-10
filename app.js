@@ -1,16 +1,18 @@
-let users=[]
+import {addUser,renderusers} from './user'
+
+const users = [];
 
 
 
-const addUser = (name = "مهمان", age = "نامشخص") => {
-  const user = { name, age };
-  return user;
+const updateUserList = (user) => {
+  users = [...users, user];
+  renderusers();
 };
+const displayUser=(name ,age)=>{
 
-const updateUserList=(user)=>{
-    users=[...users,user]
-    renderusers()
+  return `اسم:${name} , سن : ${age}`
+
 }
 
-// console.log(addUser("ahmadreza", "14"));
-
+// console.log(displayUser("ahmadreza", "14"));
+// console.log(displayUser("javad", "34"));
