@@ -21,7 +21,7 @@ export const renderUsers = (users) => users.map(displayUser).join('<br>');
 export const fetchUsers = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve([{ name: 'John', age: 30 }]);
+      resolve([{ name: 'javad', age: 30 },{ name: 'ahmadReza', age: 14 },{ name: 'roham', age: 15 }]);
     }, 2000);
   });
 };
