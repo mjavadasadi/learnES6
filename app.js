@@ -1,23 +1,50 @@
-import { User, renderusers } from "./user.js";
+import { User, renderUsers, fetchUsers } from './user.js';
 
+let users = [];
 
-const users = [{name:"ahmadReza",age:14},{name:"roham",age:15}];
 const updateUserList = (user) => {
   users = [...users, user];
-  renderusers();
+  renderUsersInHTML();
 };
 
-
-
-
-const editUser = ( newName, newAge) => {
-  User.edit(newName, newAge);
-  renderusers();
+const renderUsersInHTML = () => {
+  const userList = document.getElementById('userList');
+  userList.innerHTML = users.map((user, index) => `
+    <li>
+      ${user.name}, ${user.age}
+      <button class="edit" onclick="editUser(${index})">Edit</button>
+      <button class="delete" onclick="deleteUser(${index})">Delete</button>
+    </li>
+  `).join('');
 };
-const deleteUser =(user)=>{
-users=users.filter(u => u!==user);
-renderusers();
+
+window.editUser = (index) => {
+  const user = users[index];
+  const newName = prompt("Enter new name:", user.name);
+  const newAge = prompt("Enter new age:", user.age);
+  user.edit(newName, newAge);
+  renderUsersInHTML();
 };
 
-// console.log(displayUser("ahmadrez", "14"));
-// console.log(displayUser("javad", "34"));
+window.deleteUser = (index) => {
+  users = users[index].delete(users);
+  renderUsersInHTML();
+};
+
+document.getElementById('userForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const name = document.getElementById('name').value;
+  const age = document.getElementById('age').value;
+  const newUser = new User(name, age);
+  updateUserList(newUser);
+});
+
+async function loadUsers() {
+  const fetchedUsers = await fetchUsers();
+  fetchedUsers.forEach(userData => {
+    const user = new User(userData.name, userData.age);
+    updateUserList(user);
+  });
+}
+
+loadUsers();
